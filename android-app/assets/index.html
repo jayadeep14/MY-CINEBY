@@ -1,0 +1,2663 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MYCINE - Movies & TV</title>
+
+<style>
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --red: #e50914;
+    --background: #080808;
+    --surface: #181818;
+    --text: #fff;
+    --muted: #aaa;
+}
+
+body {
+    background: var(--background);
+    color: white;
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    font-family: inherit;
+}
+
+img {
+    display: block;
+}
+
+/* NAVBAR */
+
+.navbar {
+    height: 70px;
+    padding: 0 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    background: linear-gradient(to bottom, rgba(0,0,0,.95), transparent);
+    transition: .3s;
+    gap: 15px;
+}
+
+.navbar.scrolled {
+    background: #080808;
+}
+
+.logo {
+    color: var(--red);
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: -1px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.nav-links {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+}
+
+.nav-links a {
+    color: #ddd;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.nav-links a:hover {
+    color: white;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-box,
+.id-box {
+    display: flex;
+    align-items: center;
+    background: rgba(0,0,0,.8);
+    border: 1px solid #555;
+    padding: 8px 10px;
+    border-radius: 5px;
+}
+
+.search-box input,
+.id-box input {
+    width: 125px;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    font-size: 13px;
+}
+
+.search-box button {
+    background: transparent;
+    color: white;
+    font-size: 19px;
+}
+
+.id-box {
+    border-color: var(--red);
+}
+
+.id-box input {
+    width: 85px;
+}
+
+.id-box button {
+    background: var(--red);
+    color: white;
+    padding: 7px 10px;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+.menu-btn {
+    display: none;
+    color: white;
+    background: transparent;
+    font-size: 25px;
+}
+
+/* HERO */
+
+.hero {
+    height: 85vh;
+    min-height: 550px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    background-size: cover;
+    background-position: center 25%;
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to right,
+        rgba(0,0,0,.95),
+        rgba(0,0,0,.65) 40%,
+        transparent
+    );
+}
+
+.hero::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 35%;
+    background: linear-gradient(transparent, var(--background));
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 600px;
+    padding: 0 7%;
+    margin-top: 60px;
+}
+
+.featured-label {
+    color: var(--red);
+    font-weight: bold;
+    font-size: 13px;
+    letter-spacing: 3px;
+    margin-bottom: 15px;
+}
+
+.hero h1 {
+    font-size: clamp(35px,5vw,65px);
+    font-weight: 900;
+    margin-bottom: 15px;
+}
+
+.hero-meta {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 18px;
+    color: #ddd;
+    font-size: 14px;
+}
+
+.hero-rating,
+.rating {
+    color: #46d369;
+    font-weight: bold;
+}
+
+.hero-description {
+    color: #ddd;
+    line-height: 1.7;
+    font-size: 15px;
+    margin-bottom: 25px;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.btn {
+    padding: 13px 24px;
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    transition: .2s;
+}
+
+.btn-play {
+    background: white;
+    color: black;
+}
+
+.btn-play:hover {
+    background: #ddd;
+}
+
+.btn-info {
+    background: rgba(100,100,100,.7);
+    color: white;
+}
+
+/* MOVIE CATEGORIES */
+
+.main-content {
+    padding: 0 5%;
+    margin-top: -45px;
+    position: relative;
+    z-index: 5;
+}
+
+.movie-section {
+    margin-bottom: 45px;
+}
+
+.section-header {
+    margin-bottom: 17px;
+}
+
+.section-header h2 {
+    font-size: 21px;
+}
+
+.movie-row {
+    display: grid;
+    grid-template-columns: repeat(6,minmax(0,1fr));
+    gap: 15px;
+}
+
+.movie-card {
+    position: relative;
+    border-radius: 7px;
+    overflow: hidden;
+    background: var(--surface);
+    cursor: pointer;
+    transition: .3s;
+}
+
+.movie-card:hover {
+    transform: scale(1.06);
+    z-index: 10;
+    box-shadow: 0 10px 30px rgba(0,0,0,.7);
+}
+
+.movie-card img {
+    width: 100%;
+    aspect-ratio: 2/3;
+    object-fit: cover;
+    background: #222;
+}
+
+.movie-info {
+    padding: 10px;
+}
+
+.movie-title {
+    font-size: 13px;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 8px;
+}
+
+.movie-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--muted);
+}
+
+.card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(transparent 30%,rgba(0,0,0,.95));
+    opacity: 0;
+    transition: .3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.movie-card:hover .card-overlay {
+    opacity: 1;
+}
+
+.card-play {
+    width: 45px;
+    height: 45px;
+    background: var(--red);
+    color: white;
+    border-radius: 50%;
+    font-size: 20px;
+}
+
+.loading,
+.empty {
+    color: #aaa;
+    padding: 30px 0;
+    grid-column: 1/-1;
+}
+
+/* SEARCH */
+
+.search-results {
+    display: none;
+    padding: 100px 5% 50px;
+    min-height: 70vh;
+}
+
+.search-results h2 {
+    margin-bottom: 25px;
+}
+
+/* DETAILS MODAL */
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(0,0,0,.85);
+    overflow-y: auto;
+    padding: 40px 15px;
+}
+
+.modal.active {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.modal-content {
+    width: 100%;
+    max-width: 850px;
+    background: #181818;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.modal-banner {
+    height: 400px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.modal-banner::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(transparent,#181818);
+}
+
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 38px;
+    height: 38px;
+    background: #181818;
+    color: white;
+    border-radius: 50%;
+    font-size: 22px;
+    z-index: 5;
+}
+
+.modal-details {
+    padding: 0 35px 35px;
+    position: relative;
+    margin-top: -90px;
+    z-index: 2;
+}
+
+.modal-details h2 {
+    font-size: 32px;
+    margin: 20px 0 15px;
+}
+
+.modal-meta {
+    display: flex;
+    gap: 18px;
+    color: #aaa;
+    margin-bottom: 20px;
+    font-size: 14px;
+    flex-wrap: wrap;
+}
+
+.modal-description {
+    line-height: 1.8;
+    color: #ddd;
+    margin-bottom: 25px;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 12px;
+}
+
+/* PLAYER */
+
+.player-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    background: #000;
+    overflow-y: auto;
+}
+
+.player-modal.active {
+    display: block;
+}
+
+.player-header {
+    height: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 4%;
+    background: #111;
+}
+
+.player-header h2 {
+    font-size: 18px;
+}
+
+.player-close {
+    background: #222;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+
+.player-container {
+    max-width: 1250px;
+    margin: 20px auto;
+    padding: 0 15px;
+}
+
+.player {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: #000;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.player iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* PLAYER CONTROL PANEL */
+
+.player-controls {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 18px 0;
+}
+
+.control-btn {
+    background: var(--red);
+    color: white;
+    padding: 11px 15px;
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: bold;
+    transition: .15s;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.control-btn:hover {
+    background: #b20710;
+}
+
+.control-btn:active,
+.control-btn.seeking {
+    transform: scale(.95);
+    background: #ff4545;
+}
+
+.seek-btn {
+    min-width: 95px;
+    touch-action: none;
+}
+
+.seek-btn small {
+    display: block;
+    font-size: 10px;
+    font-weight: normal;
+    margin-top: 3px;
+    color: #ffdada;
+}
+
+.control-select {
+    background: #222;
+    color: white;
+    border: 1px solid #444;
+    padding: 11px;
+    border-radius: 5px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+/* TIMELINE */
+
+.timeline {
+    width: 100%;
+    margin-top: 12px;
+}
+
+.timeline input {
+    width: 100%;
+    height: 8px;
+    accent-color: var(--red);
+    cursor: pointer;
+}
+
+.player-info {
+    display: flex;
+    justify-content: space-between;
+    color: #aaa;
+    font-size: 13px;
+    margin-top: 8px;
+}
+
+.player-status {
+    color: #aaa;
+    margin-top: 15px;
+    font-size: 13px;
+}
+
+.seek-indicator {
+    display: none;
+    color: white;
+    background: rgba(229,9,20,.9);
+    padding: 8px 14px;
+    border-radius: 5px;
+    font-size: 13px;
+    margin-top: 10px;
+    width: fit-content;
+}
+
+.seek-indicator.active {
+    display: block;
+}
+
+/* FOOTER */
+
+footer {
+    padding: 50px 5%;
+    color: #777;
+    font-size: 13px;
+    border-top: 1px solid #222;
+    margin-top: 50px;
+    line-height: 2;
+}
+
+footer a {
+    color: #999;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1100px) {
+    .movie-row {
+        grid-template-columns: repeat(5,minmax(0,1fr));
+    }
+
+    .nav-links {
+        display: none;
+    }
+}
+
+@media(max-width:800px) {
+    .menu-btn {
+        display: block;
+    }
+
+    .movie-row {
+        grid-template-columns: repeat(4,minmax(0,1fr));
+    }
+
+    .hero {
+        height: 75vh;
+    }
+}
+
+@media(max-width:650px) {
+
+    .navbar {
+        padding: 0 3%;
+        height: 65px;
+    }
+
+    .logo {
+        font-size: 22px;
+    }
+
+    .nav-right {
+        gap: 5px;
+    }
+
+    .search-box input {
+        width: 75px;
+        font-size: 11px;
+    }
+
+    .id-box input {
+        width: 55px;
+        font-size: 11px;
+    }
+
+    .id-box button {
+        font-size: 10px;
+        padding: 7px 6px;
+    }
+
+    .hero {
+        height: 75vh;
+        min-height: 520px;
+    }
+
+    .hero-content {
+        padding: 0 5%;
+    }
+
+    .hero h1 {
+        font-size: 36px;
+    }
+
+    .hero-description {
+        font-size: 13px;
+    }
+
+    .main-content {
+        padding: 0 4%;
+    }
+
+    .movie-row {
+        grid-template-columns: repeat(3,minmax(0,1fr));
+        gap: 10px;
+    }
+
+    .movie-info {
+        padding: 7px;
+    }
+
+    .movie-title {
+        font-size: 11px;
+    }
+
+    .movie-meta {
+        font-size: 10px;
+    }
+
+    .section-header h2 {
+        font-size: 17px;
+    }
+
+    .btn {
+        padding: 11px 15px;
+        font-size: 13px;
+    }
+
+    .modal-banner {
+        height: 250px;
+    }
+
+    .modal-details {
+        padding: 0 20px 25px;
+        margin-top: -60px;
+    }
+
+    .modal-details h2 {
+        font-size: 24px;
+    }
+
+    .player-container {
+        padding: 0 8px;
+        margin-top: 10px;
+    }
+
+    .player-header {
+        height: 55px;
+    }
+
+    .player-header h2 {
+        font-size: 14px;
+    }
+
+    .control-btn {
+        padding: 10px;
+        font-size: 11px;
+    }
+
+    .control-select {
+        padding: 10px;
+        font-size: 11px;
+    }
+
+    .player-controls {
+        gap: 7px;
+    }
+
+    .seek-btn {
+        min-width: 85px;
+    }
+
+}
+
+@media(max-width:390px) {
+    .logo {
+        font-size: 19px;
+    }
+
+    .search-box input {
+        width: 55px;
+    }
+
+    .id-box input {
+        width: 42px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<header class="navbar" id="navbar">
+
+    <div class="logo" onclick="goHome()">MYCINE</div>
+
+    <ul class="nav-links">
+        <li><a id="homeNavLink" href="#" onclick="goHome()">Home</a></li>
+        <li><a href="#trending">Trending</a></li>
+        <li><a href="#popular">Popular</a></li>
+        <li><a href="#toprated">Top Rated</a></li>
+        <li><a href="#upcoming">Upcoming</a></li>
+    </ul>
+
+    <div class="nav-right">
+
+        <div class="search-box">
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search movies..."
+                autocomplete="off">
+
+            <button onclick="searchMovies()">⌕</button>
+        </div>
+
+        <div class="id-box">
+
+            <input
+                type="number"
+                id="movieIDInput"
+                placeholder="TMDB ID"
+                min="1"
+                step="1"
+                aria-label="TMDB movie ID"
+                onkeydown="if(event.key==='Enter')loadMovieByID()">
+
+            <button onclick="loadMovieByID()">Load ID</button>
+
+        </div>
+
+        <button class="menu-btn" onclick="toggleMenu()">☰</button>
+
+    </div>
+
+</header>
+
+
+<!-- FEATURED HERO -->
+
+<section class="hero" id="hero">
+
+    <div class="hero-content">
+
+        <div class="featured-label">
+            MYCINE ORIGINAL EXPERIENCE
+        </div>
+
+        <h1 id="heroTitle">Loading Movies...</h1>
+
+        <div class="hero-meta">
+
+            <span class="hero-rating" id="heroRating">
+                ★ --
+            </span>
+
+            <span id="heroYear">----</span>
+
+            <span>HD</span>
+
+        </div>
+
+        <p class="hero-description" id="heroDescription">
+            Discover your next favorite movie.
+        </p>
+
+        <div class="hero-buttons">
+
+            <button class="btn btn-play" onclick="playFeatured()">
+                ▶ Play
+            </button>
+
+            <button class="btn btn-info" onclick="showFeaturedDetails()">
+                ⓘ More Info
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- SEARCH RESULTS -->
+
+<section class="search-results" id="searchResults">
+
+    <h2 id="searchHeading">Search Results</h2>
+
+    <div class="movie-row" id="searchGrid"></div>
+
+</section>
+
+
+<!-- CATEGORIES -->
+
+<main class="main-content" id="mainContent">
+
+    <section class="movie-section" id="continueSection" style="display:none">
+        <div class="section-header"><h2>▶ Continue Watching</h2></div>
+        <div class="movie-row" id="continueGrid"></div>
+    </section>
+
+    <section class="movie-section" id="trending">
+
+        <div class="section-header">
+            <h2>🔥 Trending Movies</h2>
+        </div>
+
+        <div class="movie-row" id="trendingGrid">
+            <div class="loading">Loading movies...</div>
+        </div>
+
+    </section>
+
+    <section class="movie-section" id="popular">
+
+        <div class="section-header">
+            <h2>⭐ Popular Movies</h2>
+        </div>
+
+        <div class="movie-row" id="popularGrid">
+            <div class="loading">Loading movies...</div>
+        </div>
+
+    </section>
+
+    <section class="movie-section" id="toprated">
+
+        <div class="section-header">
+            <h2>🏆 Top Rated Movies</h2>
+        </div>
+
+        <div class="movie-row" id="topratedGrid">
+            <div class="loading">Loading movies...</div>
+        </div>
+
+    </section>
+
+    <section class="movie-section" id="upcoming">
+
+        <div class="section-header">
+            <h2>🎬 Upcoming Movies</h2>
+        </div>
+
+        <div class="movie-row" id="upcomingGrid">
+            <div class="loading">Loading movies...</div>
+        </div>
+
+    </section>
+
+    <section class="movie-section" id="nowplaying">
+
+        <div class="section-header">
+            <h2>🍿 Now Playing</h2>
+        </div>
+
+        <div class="movie-row" id="nowplayingGrid">
+            <div class="loading">Loading movies...</div>
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- DETAILS MODAL -->
+
+<div class="modal" id="detailsModal">
+
+    <div class="modal-content">
+
+        <button class="close-modal" onclick="closeDetails()">×</button>
+
+        <div class="modal-banner" id="modalBanner"></div>
+
+        <div class="modal-details">
+
+            <div class="modal-actions">
+
+                <button class="btn btn-play" id="detailsPlayButton" onclick="playSelected()">
+                    ▶ Play Movie
+                </button>
+
+            </div>
+
+            <h2 id="modalTitle"></h2>
+
+            <div class="modal-meta">
+
+                <span id="modalRating"></span>
+
+                <span id="modalYear"></span>
+
+                <span id="modalID"></span>
+
+            </div>
+
+            <p class="modal-description" id="modalDescription"></p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- CINESRC PLAYER -->
+
+<div class="player-modal" id="playerModal">
+
+    <div class="player-header">
+
+        <h2 id="playerTitle">MYCINE Player</h2>
+
+        <button class="player-close" onclick="closePlayer()">
+            ✕ Close Player
+        </button>
+
+    </div>
+
+    <div class="player-container">
+
+        <div class="player">
+
+            <iframe
+                id="moviePlayer"
+                src="about:blank"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowfullscreen
+                referrerpolicy="strict-origin-when-cross-origin">
+            </iframe>
+
+        </div>
+
+
+        <!-- PLAYER CONTROLS -->
+
+        <div class="player-controls">
+
+            <!-- BACKWARD -->
+
+            <button
+                class="control-btn seek-btn"
+                id="backwardBtn"
+                type="button">
+
+                ⏪ Backward
+
+                <small id="backwardStep">1 minute</small>
+
+            </button>
+
+
+            <!-- PLAY -->
+
+            <button
+                class="control-btn"
+                onclick="sendCommand('play')">
+
+                ▶ Play
+
+            </button>
+
+
+            <!-- FORWARD -->
+
+            <button
+                class="control-btn seek-btn"
+                id="forwardBtn"
+                type="button">
+
+                Forward ⏩
+
+                <small id="forwardStep">1 minute</small>
+
+            </button>
+
+
+            <!-- PAUSE -->
+
+            <button
+                class="control-btn"
+                onclick="sendCommand('pause')">
+
+                ⏸ Pause
+
+            </button>
+
+
+            <!-- RESTART -->
+
+            <button
+                class="control-btn"
+                onclick="restartMovie()">
+
+                ⏮ Restart
+
+            </button>
+
+
+            <!-- MUTE -->
+
+            <button
+                class="control-btn"
+                id="muteButton"
+                onclick="toggleMute()">
+
+                🔊 Mute
+
+            </button>
+
+
+            <!-- VOLUME -->
+
+            <select
+                class="control-select"
+                onchange="setVolume(this.value)">
+
+                <option value="0">0% Volume</option>
+                <option value="0.25">25% Volume</option>
+                <option value="0.5">50% Volume</option>
+                <option value="0.75">75% Volume</option>
+                <option value="1" selected>100% Volume</option>
+
+            </select>
+
+
+            <!-- SPEED -->
+
+            <select
+                class="control-select"
+                id="speedSelect"
+                onchange="changeSpeed(this.value)">
+
+                <option value="0.25">0.25x Speed</option>
+                <option value="0.5">0.5x Speed</option>
+                <option value="0.75">0.75x Speed</option>
+                <option value="1" selected>1x Speed</option>
+                <option value="1.25">1.25x Speed</option>
+                <option value="1.5">1.5x Speed</option>
+                <option value="1.75">1.75x Speed</option>
+                <option value="2">2x Speed</option>
+
+            </select>
+
+
+            <!-- FULLSCREEN -->
+
+            <button
+                class="control-btn"
+                onclick="toggleFullscreen()">
+
+                ⛶ Fullscreen
+
+            </button>
+
+        </div>
+
+
+        <!-- SEEK INDICATOR -->
+
+        <div class="seek-indicator" id="seekIndicator">
+            Seeking...
+        </div>
+
+
+        <!-- TIMELINE -->
+
+        <div class="timeline">
+
+            <input
+                type="range"
+                id="progress"
+                min="0"
+                max="100"
+                value="0"
+                step="0.01">
+
+            <div class="player-info">
+
+                <span id="currentTime">00:00</span>
+
+                <span id="duration">00:00</span>
+
+            </div>
+
+        </div>
+
+
+        <div class="player-status" id="playerStatus">
+            Loading player...
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- FOOTER -->
+
+<footer>
+
+    <h2 style="color:#e50914;margin-bottom:10px">
+        MYCINE
+    </h2>
+
+    <p>
+        Discover movies, explore trending titles and enjoy your movie experience.
+    </p>
+
+    <p style="margin-top:15px">
+
+        Movie information and images provided by
+
+        <a
+            href="https://www.themoviedb.org/"
+            target="_blank"
+            rel="noopener">
+
+            TMDB
+
+        </a>.
+
+        This product uses the TMDB API but is not endorsed or certified by TMDB.
+
+    </p>
+
+    <p style="margin-top:15px">
+        © 2026 MYCINE
+    </p>
+
+</footer>
+
+
+<script>
+
+/* =========================================
+   CONFIGURATION
+========================================= */
+
+// Insert your TMDB API key here.
+// Rotate the key previously pasted into public code.
+
+const TMDB_API_KEY = "6c6159e864115d9181bc7b49510bc5d2";
+
+const TMDB_BASE = "https://api.themoviedb.org/3";
+
+const IMAGE_BASE = "https://image.tmdb.org/t/p/";
+
+const CINESRC_BASE = "https://cinesrc.st/embed/movie/";
+
+
+/* =========================================
+   GLOBAL VARIABLES
+========================================= */
+
+let featuredMovie = null;
+
+let selectedMovie = null;
+
+let activeMovie = null;
+
+let pendingResumeTime = 0;
+
+let duration = 0;
+
+let currentTime = 0;
+
+let isMuted = false;
+
+let searchTimeout = null;
+
+let seeking = false;
+
+let seekTimer = null;
+
+let seekStartTime = 0;
+
+let seekDirection = 0;
+
+let seekStep = 60;
+
+let lastSeekTime = 0;
+
+let pendingSeek = null;
+
+let lastProgressSave = 0;
+
+const WATCH_PROGRESS_KEY = "mycine_watch_progress_v1";
+
+function readWatchProgress() {
+    try {
+        return JSON.parse(localStorage.getItem(WATCH_PROGRESS_KEY) || "{}");
+    } catch (error) {
+        return {};
+    }
+}
+
+function renderContinueWatching() {
+    const entries = Object.values(readWatchProgress())
+        .filter(item => item && item.id && item.position > 0)
+        .sort((a, b) => (b.updated || 0) - (a.updated || 0));
+    const section = document.getElementById("continueSection");
+    const grid = document.getElementById("continueGrid");
+    if (!entries.length) {
+        section.style.display = "none";
+        return;
+    }
+    section.style.display = "block";
+    grid.innerHTML = entries.map(item => {
+        const title = escapeHTML(item.title || "Movie");
+        const id = Number(item.id);
+        const percent = item.duration > 0
+            ? Math.min(100, Math.max(0, item.position / item.duration * 100)) : 0;
+        const poster = escapeHTML(item.poster || posterURL(null));
+        return `<div class="movie-card" tabindex="0" role="button" aria-label="Continue ${title}"
+            onclick="showDetails(${id})"
+            onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();showDetails(${id})}">
+            <img src="${poster}" alt="${title}" loading="lazy">
+            <div class="movie-info">
+                <div class="movie-title">${title}</div>
+                <div class="movie-meta"><span>Resume ${formatTime(item.position)}</span><span>${Math.round(percent)}%</span></div>
+                <div style="height:4px;background:#444;margin-top:8px;border-radius:2px;overflow:hidden"><div style="height:100%;width:${percent}%;background:var(--red)"></div></div>
+            </div>
+        </div>`;
+    }).join("");
+}
+
+function saveWatchProgress(force) {
+    if (!activeMovie || !duration || !currentTime) return;
+    const now = Date.now();
+    const refreshContinueRow = force || now - lastProgressSave >= 5000;
+    lastProgressSave = now;
+    try {
+        const progress = readWatchProgress();
+        progress[String(activeMovie.id)] = {
+            id: Number(activeMovie.id), title: getMovieTitle(activeMovie),
+            poster: posterURL(activeMovie.poster_path), position: currentTime,
+            duration: duration, updated: now
+        };
+        localStorage.setItem(WATCH_PROGRESS_KEY, JSON.stringify(progress));
+        if (refreshContinueRow) renderContinueWatching();
+    } catch (error) {
+        console.warn("Could not save playback progress", error);
+    }
+}
+
+function resumePlaybackIfReady() {
+    if (pendingResumeTime > 0 && duration > 0) {
+        sendCommand("seek", [pendingResumeTime]);
+        document.getElementById("playerStatus").textContent =
+            "Resuming from " + formatTime(pendingResumeTime);
+        pendingResumeTime = 0;
+    }
+}
+
+
+/* =========================================
+   TMDB API
+========================================= */
+
+async function tmdbRequest(endpoint) {
+
+    if (
+        !TMDB_API_KEY ||
+        TMDB_API_KEY === "YOUR_TMDB_API_KEY"
+    ) {
+        throw new Error("Please configure your TMDB API key.");
+    }
+
+    const separator = endpoint.includes("?") ? "&" : "?";
+
+    const url =
+        TMDB_BASE +
+        endpoint +
+        separator +
+        "api_key=" +
+        encodeURIComponent(TMDB_API_KEY);
+
+    const response = await fetch(url);
+
+    if (!response.ok) {
+        throw new Error("TMDB API Error: " + response.status);
+    }
+
+    return await response.json();
+
+}
+
+
+/* =========================================
+   IMAGE HELPERS
+========================================= */
+
+function posterURL(path) {
+
+    if (!path) {
+        return "https://placehold.co/500x750/181818/ffffff?text=No+Poster";
+    }
+
+    return IMAGE_BASE + "w500" + path;
+
+}
+
+
+function backdropURL(path) {
+
+    return path
+        ? IMAGE_BASE + "original" + path
+        : "";
+
+}
+
+
+function getMovieTitle(movie) {
+
+    return movie.title || movie.original_title || "Unknown Movie";
+
+}
+
+
+function getYear(movie) {
+
+    return movie.release_date
+        ? movie.release_date.substring(0, 4)
+        : "Unknown";
+
+}
+
+
+function escapeHTML(value) {
+
+    return String(value ?? "").replace(/[&<>"']/g, char => ({
+
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+
+    })[char]);
+
+}
+
+
+/* =========================================
+   LOAD MOVIE USING TMDB ID
+========================================= */
+
+async function loadMovieByID() {
+
+    const input = document.getElementById("movieIDInput");
+
+    const id = input.value.trim();
+
+    if (!/^\d+$/.test(id) || Number(id) < 1) {
+
+        alert("Enter a valid TMDB Movie ID.");
+
+        input.focus();
+
+        return;
+
+    }
+
+    const button = document.querySelector(".id-box button");
+
+    try {
+
+        input.disabled = true;
+
+        button.textContent = "Loading...";
+
+        const movie = await tmdbRequest("/movie/" + encodeURIComponent(id));
+
+        await showMovieDetails(movie);
+
+    } catch (error) {
+
+        alert("Unable to load movie.\n" + error.message);
+
+    } finally {
+
+        input.disabled = false;
+
+        button.textContent = "Load ID";
+
+    }
+
+}
+
+
+/* =========================================
+   LOAD MOVIE CATEGORIES
+========================================= */
+
+async function loadCategory(endpoint, gridID) {
+
+    const grid = document.getElementById(gridID);
+
+    try {
+
+        const data = await tmdbRequest(endpoint);
+
+        renderMovies(data.results || [], grid);
+
+    } catch (error) {
+
+        grid.innerHTML =
+            `<div class="loading">${escapeHTML(error.message)}</div>`;
+
+    }
+
+}
+
+
+/* =========================================
+   RENDER MOVIE CARDS
+========================================= */
+
+function renderMovies(movies, grid) {
+
+    if (!movies.length) {
+
+        grid.innerHTML = '<div class="empty">No movies found.</div>';
+
+        return;
+
+    }
+
+    grid.innerHTML = movies.map(movie => {
+
+        const title = getMovieTitle(movie);
+
+        const rating = Number(movie.vote_average || 0).toFixed(1);
+
+        const year = getYear(movie);
+
+        const id = Number(movie.id);
+
+        return `
+
+        <div
+            class="movie-card"
+            tabindex="0"
+            role="button"
+            aria-label="${escapeHTML(title)}"
+            onclick="showDetails(${id})"
+            onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();showDetails(${id})}">
+
+            <img
+                src="${escapeHTML(posterURL(movie.poster_path))}"
+                alt="${escapeHTML(title)}"
+                loading="lazy">
+
+            <div class="card-overlay">
+
+                <button
+                    class="card-play"
+                    onclick="event.stopPropagation();showDetails(${id})">
+
+                    ▶
+
+                </button>
+
+            </div>
+
+            <div class="movie-info">
+
+                <div class="movie-title">
+                    ${escapeHTML(title)}
+                </div>
+
+                <div class="movie-meta">
+
+                    <span>${escapeHTML(year)}</span>
+
+                    <span class="rating">
+                        ★ ${rating}
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        `;
+
+    }).join("");
+
+}
+
+
+/* =========================================
+   FEATURED MOVIE
+========================================= */
+
+async function loadFeatured() {
+
+    try {
+
+        const data = await tmdbRequest("/trending/movie/day");
+
+        const movies = (data.results || []).filter(
+            movie => movie.backdrop_path
+        );
+
+        if (!movies.length) return;
+
+        featuredMovie = movies[0];
+
+        displayFeatured(featuredMovie);
+
+    } catch (error) {
+
+        console.error(error);
+
+        document.getElementById("heroTitle").textContent =
+            "Discover Movies";
+
+    }
+
+}
+
+
+function displayFeatured(movie) {
+
+    document.getElementById("hero").style.backgroundImage =
+        `url("${backdropURL(movie.backdrop_path)}")`;
+
+    document.getElementById("heroTitle").textContent =
+        getMovieTitle(movie);
+
+    document.getElementById("heroRating").textContent =
+        "★ " + Number(movie.vote_average || 0).toFixed(1);
+
+    document.getElementById("heroYear").textContent =
+        getYear(movie);
+
+    document.getElementById("heroDescription").textContent =
+        movie.overview || "Discover this movie on MYCINE.";
+
+}
+
+
+function playFeatured() {
+
+    if (featuredMovie) openPlayer(featuredMovie);
+
+}
+
+
+function showFeaturedDetails() {
+
+    if (featuredMovie) showDetails(featuredMovie.id);
+
+}
+
+
+/* =========================================
+   MOVIE DETAILS
+========================================= */
+
+async function showDetails(movieID) {
+
+    try {
+
+        const movie = await tmdbRequest("/movie/" + movieID);
+
+        await showMovieDetails(movie);
+
+    } catch (error) {
+
+        alert("Unable to load movie details.");
+
+    }
+
+}
+
+
+async function showMovieDetails(movie) {
+
+    selectedMovie = movie;
+
+    const saved = readWatchProgress()[String(movie.id)];
+    document.getElementById("detailsPlayButton").textContent =
+        saved && saved.position > 0 ? "▶ Resume Movie" : "▶ Play Movie";
+
+    document.getElementById("modalTitle").textContent =
+        getMovieTitle(movie);
+
+    document.getElementById("modalRating").textContent =
+        "★ " + Number(movie.vote_average || 0).toFixed(1) + " Rating";
+
+    document.getElementById("modalYear").textContent =
+        movie.release_date || "Release date unknown";
+
+    document.getElementById("modalID").textContent =
+        "TMDB ID: " + movie.id;
+
+    document.getElementById("modalDescription").textContent =
+        movie.overview || "No description available.";
+
+    const image = movie.backdrop_path || movie.poster_path;
+
+    document.getElementById("modalBanner").style.backgroundImage =
+        image ? `url("${backdropURL(image)}")` : "none";
+
+    document.getElementById("detailsModal").classList.add("active");
+
+    document.body.style.overflow = "hidden";
+
+}
+
+
+function closeDetails() {
+
+    document.getElementById("detailsModal").classList.remove("active");
+
+    if (!document.getElementById("playerModal").classList.contains("active")) {
+
+        document.body.style.overflow = "";
+
+    }
+
+}
+
+
+function playSelected() {
+
+    if (!selectedMovie) return;
+
+    const movie = selectedMovie;
+
+    closeDetails();
+
+    openPlayer(movie);
+
+}
+
+
+/* =========================================
+   OPEN CINESRC PLAYER
+========================================= */
+
+function openPlayer(movie) {
+
+    const id = Number(movie.id);
+
+    if (!Number.isInteger(id) || id < 1) return;
+
+    const iframe = document.getElementById("moviePlayer");
+
+    activeMovie = movie;
+    const saved = readWatchProgress()[String(id)];
+    pendingResumeTime = saved && saved.duration > 0 && saved.position < saved.duration - 20
+        ? Number(saved.position) : 0;
+
+    document.getElementById("playerTitle").textContent =
+        getMovieTitle(movie);
+
+    const params = new URLSearchParams({
+
+        autoplay: "true",
+        muted: "false",
+        color: "#e50914",
+        controls: "true",
+        quality: "1080"
+
+    });
+
+    iframe.src = CINESRC_BASE + id + "?" + params.toString();
+
+    duration = 0;
+
+    currentTime = 0;
+
+    isMuted = false;
+
+    pendingSeek = null;
+
+    lastProgressSave = 0;
+
+    stopSeeking();
+
+    document.getElementById("progress").value = 0;
+
+    document.getElementById("currentTime").textContent = "00:00";
+
+    document.getElementById("duration").textContent = "00:00";
+
+    document.getElementById("playerStatus").textContent =
+        "Loading player...";
+
+    document.getElementById("muteButton").textContent =
+        "🔊 Mute";
+
+    document.getElementById("playerModal").classList.add("active");
+
+    document.body.style.overflow = "hidden";
+
+}
+
+
+/* =========================================
+   CLOSE PLAYER
+========================================= */
+
+function closePlayer() {
+
+    stopSeeking();
+
+    saveWatchProgress(true);
+
+    const iframe = document.getElementById("moviePlayer");
+
+    iframe.src = "about:blank";
+
+    document.getElementById("playerModal").classList.remove("active");
+
+    activeMovie = null;
+
+    document.body.style.overflow = "";
+
+}
+
+
+/* =========================================
+   CINESRC POSTMESSAGE COMMANDS
+========================================= */
+
+function sendCommand(command, args = []) {
+
+    const iframe = document.getElementById("moviePlayer");
+
+    if (!iframe.contentWindow) return;
+
+    iframe.contentWindow.postMessage({
+
+        type: "cinesrc:command",
+
+        command: command,
+
+        args: args
+
+    }, "https://cinesrc.st");
+
+}
+
+
+/* =========================================
+   PLAYER PLAYBACK
+========================================= */
+
+function restartMovie() {
+
+    currentTime = 0;
+
+    if (activeMovie) {
+        const progress = readWatchProgress();
+        delete progress[String(activeMovie.id)];
+        try { localStorage.setItem(WATCH_PROGRESS_KEY, JSON.stringify(progress)); } catch (error) {}
+        renderContinueWatching();
+    }
+
+    sendCommand("seek", [0]);
+
+    sendCommand("play");
+
+    document.getElementById("playerStatus").textContent =
+        "Restarting...";
+
+}
+
+
+function toggleMute() {
+
+    isMuted = !isMuted;
+
+    sendCommand("setMuted", [isMuted]);
+
+    document.getElementById("muteButton").textContent =
+        isMuted ? "🔇 Unmute" : "🔊 Mute";
+
+}
+
+
+function setVolume(value) {
+
+    const volume = Number(value);
+
+    isMuted = volume === 0;
+
+    sendCommand("setVolume", [volume]);
+
+    sendCommand("setMuted", [isMuted]);
+
+    document.getElementById("muteButton").textContent =
+        isMuted ? "🔇 Unmute" : "🔊 Mute";
+
+}
+
+
+function changeSpeed(speed) {
+
+    sendCommand("setPlaybackRate", [Number(speed)]);
+
+}
+
+
+/* =========================================
+   ADVANCED FORWARD / BACKWARD SEEKING
+
+   0-5 seconds: 1 minute
+   5-10 seconds: 5 minutes
+   10+ seconds: 10 minutes
+
+   Repeats while the button is held.
+========================================= */
+
+function getSeekStep(heldSeconds) {
+
+    if (heldSeconds >= 10) {
+
+        return 600;
+
+    }
+
+    if (heldSeconds >= 5) {
+
+        return 300;
+
+    }
+
+    return 60;
+
+}
+
+
+function formatSeekStep(seconds) {
+
+    return (seconds / 60) + " minutes";
+
+}
+
+
+function updateSeekButtonLabels(seconds) {
+
+    const label = formatSeekStep(seconds);
+
+    document.getElementById("forwardStep").textContent = label;
+
+    document.getElementById("backwardStep").textContent = label;
+
+}
+
+
+function performSeek(direction, step) {
+
+    if (!duration || duration <= 0) {
+
+        sendCommand("getDuration");
+
+    }
+
+    const target = Math.max(
+        0,
+        Math.min(duration || Infinity, currentTime + direction * step)
+    );
+
+    currentTime = target;
+
+    sendCommand("seek", [target]);
+
+    updateProgress();
+
+    const indicator = document.getElementById("seekIndicator");
+
+    indicator.textContent =
+        (direction > 0 ? "⏩ Forward " : "⏪ Backward ") +
+        formatSeekStep(step);
+
+    indicator.classList.add("active");
+
+}
+
+
+function startSeeking(direction, button) {
+
+    if (seeking) return;
+
+    seeking = true;
+
+    seekDirection = direction;
+
+    seekStartTime = Date.now();
+
+    seekStep = 60;
+
+    lastSeekTime = 0;
+
+    button.classList.add("seeking");
+
+    // Immediate first jump.
+
+    performSeek(direction, 60);
+
+    updateSeekButtonLabels(60);
+
+    // Continuous seeking.
+
+    seekTimer = setInterval(() => {
+
+        const heldSeconds = (Date.now() - seekStartTime) / 1000;
+
+        const newStep = getSeekStep(heldSeconds);
+
+        if (newStep !== seekStep) {
+
+            seekStep = newStep;
+
+            updateSeekButtonLabels(seekStep);
+
+        }
+
+        // Repeat every 700ms.
+
+        performSeek(direction, seekStep);
+
+    }, 700);
+
+}
+
+
+function stopSeeking() {
+
+    if (!seeking) return;
+
+    seeking = false;
+
+    clearInterval(seekTimer);
+
+    seekTimer = null;
+
+    document.querySelectorAll(".seek-btn").forEach(button => {
+
+        button.classList.remove("seeking");
+
+    });
+
+    updateSeekButtonLabels(60);
+
+    document.getElementById("seekIndicator").classList.remove("active");
+
+}
+
+
+/* =========================================
+   CONNECT HOLD BUTTONS
+========================================= */
+
+function setupSeekButtons() {
+
+    const backward = document.getElementById("backwardBtn");
+
+    const forward = document.getElementById("forwardBtn");
+
+    backward.addEventListener("pointerdown", event => {
+
+        event.preventDefault();
+
+        startSeeking(-1, backward);
+
+    });
+
+    forward.addEventListener("pointerdown", event => {
+
+        event.preventDefault();
+
+        startSeeking(1, forward);
+
+    });
+
+    [backward, forward].forEach(button => {
+
+        button.addEventListener("pointerup", stopSeeking);
+
+        button.addEventListener("pointerleave", stopSeeking);
+
+        button.addEventListener("pointercancel", stopSeeking);
+
+        button.addEventListener("contextmenu", event => {
+            event.preventDefault();
+        });
+
+    });
+
+    window.addEventListener("pointerup", stopSeeking);
+
+}
+
+setupSeekButtons();
+
+
+/* =========================================
+   TIME FORMATTING
+========================================= */
+
+function formatTime(seconds) {
+
+    if (!Number.isFinite(seconds) || seconds < 0) {
+
+        return "00:00";
+
+    }
+
+    const hours = Math.floor(seconds / 3600);
+
+    const minutes = Math.floor((seconds % 3600) / 60);
+
+    const secs = Math.floor(seconds % 60);
+
+    if (hours > 0) {
+
+        return (
+            String(hours).padStart(2, "0") + ":" +
+            String(minutes).padStart(2, "0") + ":" +
+            String(secs).padStart(2, "0")
+        );
+
+    }
+
+    return (
+        String(minutes).padStart(2, "0") + ":" +
+        String(secs).padStart(2, "0")
+    );
+
+}
+
+
+/* =========================================
+   UPDATE PLAYER POSITION
+
+   The progress bar follows the actual
+   player time received from CineSRC.
+========================================= */
+
+function updateProgress() {
+
+    const progress = document.getElementById("progress");
+
+    if (duration > 0) {
+
+        progress.value = (currentTime / duration) * 100;
+
+    } else {
+
+        progress.value = 0;
+
+    }
+
+    document.getElementById("currentTime").textContent =
+        formatTime(currentTime);
+
+    document.getElementById("duration").textContent =
+        formatTime(duration);
+
+}
+
+
+/* =========================================
+   TIMELINE DRAG / SEEK
+========================================= */
+
+const progress = document.getElementById("progress");
+
+let draggingTimeline = false;
+
+
+progress.addEventListener("pointerdown", () => {
+
+    draggingTimeline = true;
+
+});
+
+
+progress.addEventListener("input", function() {
+
+    if (duration <= 0) return;
+
+    const previewTime = (this.value / 100) * duration;
+
+    document.getElementById("currentTime").textContent =
+        formatTime(previewTime);
+
+});
+
+
+function seekTimeline() {
+
+    if (duration <= 0) return;
+
+    const target = (progress.value / 100) * duration;
+
+    currentTime = target;
+
+    sendCommand("seek", [target]);
+
+    updateProgress();
+
+}
+
+
+progress.addEventListener("change", seekTimeline);
+
+
+progress.addEventListener("pointerup", () => {
+
+    if (draggingTimeline) {
+
+        seekTimeline();
+
+        draggingTimeline = false;
+
+    }
+
+});
+
+
+/* =========================================
+   PLAYER EVENTS FROM CINESRC
+========================================= */
+
+window.addEventListener("message", function(event) {
+
+    if (event.origin !== "https://cinesrc.st") return;
+
+    const data = event.data;
+
+    if (!data || typeof data.type !== "string") return;
+
+    switch (data.type) {
+
+        case "cinesrc:ready":
+
+            document.getElementById("playerStatus").textContent =
+                "Player Ready";
+
+            sendCommand("getDuration");
+
+            resumePlaybackIfReady();
+
+            break;
+
+
+        case "cinesrc:play":
+
+            document.getElementById("playerStatus").textContent =
+                "Playing";
+
+            break;
+
+
+        case "cinesrc:pause":
+
+            document.getElementById("playerStatus").textContent =
+                "Paused";
+
+            saveWatchProgress(true);
+
+            break;
+
+
+        case "cinesrc:timeupdate":
+
+            // Use actual player position, not an estimated timer.
+
+            if (!draggingTimeline && !seeking) {
+
+                currentTime = Number(data.currentTime) || 0;
+
+            }
+
+            duration = Number(data.duration) || duration;
+
+            saveWatchProgress(false);
+
+            if (!draggingTimeline) {
+
+                updateProgress();
+
+            }
+
+            break;
+
+
+        case "cinesrc:loadedmetadata":
+
+            duration = Number(data.duration) || 0;
+
+            updateProgress();
+
+            resumePlaybackIfReady();
+
+            saveWatchProgress(true);
+
+            break;
+
+
+        case "cinesrc:ended":
+
+            document.getElementById("playerStatus").textContent =
+                "Playback Ended";
+
+            if (activeMovie) {
+                const progress = readWatchProgress();
+                delete progress[String(activeMovie.id)];
+                try { localStorage.setItem(WATCH_PROGRESS_KEY, JSON.stringify(progress)); } catch (error) {}
+                renderContinueWatching();
+            }
+
+            break;
+
+
+        case "cinesrc:error":
+
+            document.getElementById("playerStatus").textContent =
+                "Player Error: " + (data.error || "Unknown error");
+
+            break;
+
+
+        case "cinesrc:response":
+
+            if (data.command === "getDuration") {
+
+                duration = Number(data.result) || 0;
+
+                updateProgress();
+
+                resumePlaybackIfReady();
+
+            }
+
+            break;
+
+    }
+
+});
+
+
+/* =========================================
+   FULLSCREEN
+========================================= */
+
+function toggleFullscreen() {
+
+    const player = document.querySelector(".player");
+
+    if (!document.fullscreenElement) {
+
+        if (player.requestFullscreen) {
+
+            player.requestFullscreen();
+
+        }
+
+    } else {
+
+        document.exitFullscreen();
+
+    }
+
+}
+
+
+/* =========================================
+   SEARCH
+========================================= */
+
+async function searchMovies() {
+
+    const query =
+        document.getElementById("searchInput").value.trim();
+
+    if (!query) return;
+
+    document.getElementById("mainContent").style.display = "none";
+
+    document.getElementById("hero").style.display = "none";
+
+    const results = document.getElementById("searchResults");
+
+    results.style.display = "block";
+
+    const grid = document.getElementById("searchGrid");
+
+    document.getElementById("searchHeading").textContent =
+        `Search Results for "${query}"`;
+
+    grid.innerHTML =
+        '<div class="loading">Searching movies...</div>';
+
+    try {
+
+        const data = await tmdbRequest(
+            "/search/movie?query=" + encodeURIComponent(query)
+        );
+
+        renderMovies(data.results || [], grid);
+
+    } catch (error) {
+
+        grid.innerHTML =
+            `<div class="loading">${escapeHTML(error.message)}</div>`;
+
+    }
+
+}
+
+
+document.getElementById("searchInput").addEventListener(
+    "keydown",
+    function(event) {
+
+        if (event.key === "Enter") {
+
+            clearTimeout(searchTimeout);
+
+            searchMovies();
+
+        }
+
+    }
+);
+
+
+document.getElementById("searchInput").addEventListener(
+    "input",
+    function() {
+
+        clearTimeout(searchTimeout);
+
+        const query = this.value.trim();
+
+        if (query.length >= 3) {
+
+            searchTimeout = setTimeout(searchMovies, 600);
+
+        }
+
+        if (!query) {
+
+            goHome();
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   NAVIGATION
+========================================= */
+
+function goHome() {
+
+    document.getElementById("mainContent").style.display = "block";
+
+    document.getElementById("hero").style.display = "flex";
+
+    document.getElementById("searchResults").style.display = "none";
+
+    document.getElementById("searchInput").value = "";
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+}
+
+
+function toggleMenu() {
+
+    const links = document.querySelector(".nav-links");
+
+    const visible = links.style.display === "flex";
+
+    links.style.display = visible ? "none" : "flex";
+
+    if (!visible) {
+
+        links.style.position = "absolute";
+
+        links.style.top = "65px";
+
+        links.style.left = "0";
+
+        links.style.width = "100%";
+
+        links.style.padding = "20px";
+
+        links.style.background = "#111";
+
+        links.style.flexDirection = "column";
+
+    }
+
+}
+
+
+/* =========================================
+   NAVBAR SCROLL
+========================================= */
+
+window.addEventListener("scroll", function() {
+
+    document.getElementById("navbar").classList.toggle(
+        "scrolled",
+        window.scrollY > 50
+    );
+
+});
+
+
+/* =========================================
+   KEYBOARD SHORTCUTS
+========================================= */
+
+document.addEventListener("keydown", function(event) {
+
+    const playerOpen =
+        document.getElementById("playerModal").classList.contains("active");
+
+    if (event.key === "Escape") {
+
+        closeDetails();
+
+        closePlayer();
+
+        return;
+
+    }
+
+    if (!playerOpen) return;
+
+    // Avoid interfering with inputs and selects.
+
+    if (
+        event.target.tagName === "INPUT" ||
+        event.target.tagName === "SELECT"
+    ) {
+        return;
+    }
+
+    switch (event.key.toLowerCase()) {
+
+        case " ":
+
+            event.preventDefault();
+
+            sendCommand("play");
+
+            break;
+
+        case "k":
+
+            sendCommand("pause");
+
+            break;
+
+        case "arrowleft":
+
+            currentTime = Math.max(0, currentTime - 60);
+
+            sendCommand("seek", [currentTime]);
+
+            updateProgress();
+
+            break;
+
+        case "arrowright":
+
+            currentTime = Math.min(
+                duration || Infinity,
+                currentTime + 60
+            );
+
+            sendCommand("seek", [currentTime]);
+
+            updateProgress();
+
+            break;
+
+        case "m":
+
+            toggleMute();
+
+            break;
+
+        case "f":
+
+            toggleFullscreen();
+
+            break;
+
+        case "r":
+
+            restartMovie();
+
+            break;
+
+    }
+
+});
+
+
+/* =========================================
+   INITIALIZATION
+========================================= */
+
+function initializeApp() {
+
+    renderContinueWatching();
+
+    loadFeatured();
+
+    loadCategory(
+        "/trending/movie/day",
+        "trendingGrid"
+    );
+
+    loadCategory(
+        "/movie/popular",
+        "popularGrid"
+    );
+
+    loadCategory(
+        "/movie/top_rated",
+        "topratedGrid"
+    );
+
+    loadCategory(
+        "/movie/upcoming",
+        "upcomingGrid"
+    );
+
+    loadCategory(
+        "/movie/now_playing",
+        "nowplayingGrid"
+    );
+
+}
+
+document.addEventListener("visibilitychange", function() {
+    if (document.visibilityState === "hidden") saveWatchProgress(true);
+});
+
+initializeApp();
+
+</script>
+
+</body>
+</html>
