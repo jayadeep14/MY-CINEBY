@@ -6,7 +6,9 @@
 MYCINE combines a premium Netflix-inspired interface, TMDB movie discovery, movie search, direct TMDB ID loading, and CineSRC player integration.
 
 ---
-<img width="1796" height="1457" alt="image" src="https://github.com/user-attachments/assets/5bde7d0d-dad2-4c1f-98f8-e1dee214ba0c" />
+
+<img width="1802" height="1156" alt="image" src="https://github.com/user-attachments/assets/f2c43664-71e2-4918-b875-cbe3e76168d2" />
+
 
 ## 📱 Application Information
 
