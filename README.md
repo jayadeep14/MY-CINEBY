@@ -1,61 +1,42 @@
 
-# 🎬 MYCINE – Premium Android TV Streaming Application
+# 🎬 MYCINE – Premium Android TV Movie Application
 
-**MYCINE** is a premium movie discovery and streaming application designed for Android TV, Xiaomi Redmi Smart TVs, and Google TV-compatible devices.
+**MYCINE** is a cinematic movie discovery and streaming application designed for Xiaomi Redmi Smart TVs, Android TV, and compatible Google TV devices.
 
-Featuring a Netflix-inspired dark interface, TMDB movie integration, remote-control navigation, and CineSRC player integration.
+MYCINE combines a premium Netflix-inspired interface, TMDB movie discovery, movie search, direct TMDB ID loading, and CineSRC player integration.
 
-## 📱 Application Details
+---
 
-| Detail | Information |
+## 📱 Application Information
+
+| Property | Details |
 | --- | --- |
-| App Name | MYCINE |
+| Application Name | MYCINE |
 | Package Name | `com.cinesrc.tv` |
-| Version | 1.0 |
 | Platform | Android TV |
-| Language | Kotlin |
-| UI | Jetpack Compose |
+| Source Language | Java |
+| Original Website | HTML, CSS, JavaScript |
 | Movie Database | TMDB |
 | Streaming Player | CineSRC |
 | Theme | Premium Dark |
 | Primary Color | `#E50914` |
+| APK | `MYCINE.apk` |
 
 ## ✨ Features
 
-- 🎬 Netflix-inspired cinematic interface.
-- 🔥 Trending movies.
-- ⭐ Popular movies.
-- 🏆 Top-rated movies.
-- 🎥 Upcoming movies.
+- 🎬 Premium Netflix-inspired interface.
+- 🔥 Trending Movies.
+- ⭐ Popular Movies.
+- 🏆 Top Rated Movies.
+- 🎥 Upcoming Movies.
 - 🍿 Now Playing.
-- 🔍 Movie search.
-- 🔢 Load movies using TMDB ID.
-- 📖 Movie details and ratings.
-- ▶ CineSRC movie player integration.
-- ⭐ Watchlist (if implemented).
-- ⏯ Continue Watching (where playback progress is supported).
-- 📺 Android TV remote navigation.
-- ⚙ Settings and application information.
-
-## 📺 Supported Devices
-
-- Xiaomi Redmi Smart TV.
-- Android TV.
-- Google TV-compatible devices.
-- Android TV boxes.
-
-## 🛠️ Technology
-
-- Kotlin
-- Jetpack Compose
-- Android Studio
-- Material Design
-- TMDB API
-- Retrofit / OkHttp
-- Coroutines
-- Coil
-- Android WebView
-- Media3 ExoPlayer where compatible
+- 🔍 Movie Search.
+- 🔢 Load Movie by TMDB ID.
+- 📖 Movie Details.
+- ▶ CineSRC Player Integration.
+- 📺 Android TV compatibility.
+- 🎮 Remote-control navigation.
+- ⏯ Continue Watching where supported.
 
 ## 📂 Project Structure
 
@@ -104,11 +85,22 @@ MYCINE/
 └── README.md
 ```
 
-## 🔑 TMDB API Configuration
+## 🛠️ Technologies
 
-MYCINE uses TMDB for movie information and posters.
+- Java
+- Android SDK
+- Android WebView
+- HTML5
+- CSS3
+- JavaScript
+- TMDB API
+- CineSRC Embedded Player
 
-API Base:
+## 🌐 TMDB API
+
+MYCINE uses TMDB to retrieve movie information, posters, backdrops, ratings, and release dates.
+
+API Base URL:
 
 text
 
@@ -116,7 +108,7 @@ text
 https://api.themoviedb.org/3
 ```
 
-Image Base:
+Image Base URL:
 
 text
 
@@ -124,51 +116,75 @@ text
 https://image.tmdb.org/t/p/
 ```
 
-Configure your TMDB API key locally before building.
+Supported endpoints:
 
-**Security:** Never upload private API credentials to a public GitHub repository.
+| Feature | Endpoint |
+| --- | --- |
+| Trending | `/trending/movie/day` |
+| Popular | `/movie/popular` |
+| Top Rated | `/movie/top_rated` |
+| Upcoming | `/movie/upcoming` |
+| Now Playing | `/movie/now_playing` |
+| Movie Details | `/movie/{movie_id}` |
+| Search | `/search/movie?query={query}` |
+
+Configure your TMDB API key securely. Do not publish private credentials in public repositories.
 
 ## 🎞️ CineSRC Player
 
-Player URL:
+MYCINE integrates the CineSRC embedded movie player.
+
+Player Base URL:
 
 text
 
 ```
-https://cinesrc.st/embed/movie/{movie_id}?autoplay=true&muted=false&color=%23e50914&controls=true&quality=1080
+https://cinesrc.st/embed/movie/
 ```
 
-Playback controls depend on the external player's supported communication interface and Android TV compatibility.
+Example:
 
-## 🎮 Remote Control Navigation
+text
+
+```
+https://cinesrc.st/embed/movie/550?autoplay=true&muted=false&color=%23e50914&controls=true&quality=1080
+```
+
+Playback functionality depends on external player compatibility and supported communication commands.
+
+## 🎮 Android TV Remote Navigation
 
 | Remote Button | Function |
 | --- | --- |
-| UP | Navigate up |
-| DOWN | Navigate down |
+| UP | Navigate upward |
+| DOWN | Navigate downward |
 | LEFT | Previous item |
 | RIGHT | Next item |
 | OK / CENTER | Select |
-| BACK | Go back |
-| MENU | Additional options, if implemented |
+| BACK | Return to previous screen |
+| MENU | Additional options if implemented |
 
-## 📦 APK Installation
+## 📦 Download MYCINE APK
 
-### Method 1: USB Installation
+The latest available APK is included in the project root.
+
+text
+
+```
+MYCINE.apk
+```
+
+### Install on Redmi Smart TV
 
 1. Copy `MYCINE.apk` to a USB drive.
-2. Connect the USB drive to your Redmi Smart TV.
+2. Connect the USB drive to your TV.
 3. Open File Manager.
-4. Find `MYCINE.apk`.
+4. Select the APK.
 5. Allow installation from unknown sources if requested.
-6. Click Install.
-7. Launch MYCINE.
+6. Install MYCINE.
+7. Launch the application.
 
-### Method 2: ADB Installation
-
-Connect your TV and computer using ADB.
-
-Run:
+### Install using ADB
 
 bash
 
@@ -176,25 +192,33 @@ bash
 adb install -r MYCINE.apk
 ```
 
-## 🔨 Build APK Using Android Studio
+## 🔨 Build Android APK
 
-1. Open the `android-app` folder in Android Studio.
-2. Allow Gradle synchronization to finish.
-3. Configure your TMDB API key.
-4. Select Build APK.
-5. Wait for the build to complete.
-
-### Build Using Terminal
+Navigate to the Android application directory:
 
 bash
 
 ```
 cd android-app
+```
+
+Make the build script executable:
+
+bash
+
+```
 chmod +x build.sh
+```
+
+Build the APK:
+
+bash
+
+```
 ./build.sh
 ```
 
-Expected APK:
+Expected output:
 
 text
 
@@ -202,21 +226,21 @@ text
 android-app/build/MYCINE.apk
 ```
 
-Copy the APK into the main project directory:
+Copy the generated APK into the root directory:
 
 bash
 
 ```
-cp android-app/build/MYCINE.apk ./MYCINE.apk
+cp android-app/build/MYCINE.apk ../MYCINE.apk
 ```
 
 ## 🔐 Security
 
-- Keep API credentials private.
+- Do not expose private API credentials.
+- Keep signing keystores private.
 - Use HTTPS connections.
-- Validate external WebView message origins.
-- Avoid committing private configuration files.
-- Protect application signing credentials.
+- Validate WebView message origins.
+- Do not upload private signing credentials to GitHub.
 
 ## ⚠️ Disclaimer
 
@@ -226,7 +250,7 @@ Movie information and images are provided by TMDB.
 
 This product uses the TMDB API but is not endorsed or certified by TMDB.
 
-MYCINE does not host movie content. External streaming availability depends on CineSRC and its services.
+MYCINE does not host movie content. Streaming availability depends on external services.
 
 All trademarks and content belong to their respective owners.
 
@@ -235,12 +259,33 @@ All trademarks and content belong to their respective owners.
 - TMDB – Movie information and images.
 - CineSRC – Embedded player integration.
 - Android – Application platform.
-- Kotlin – Development language.
+- MYCINE – Application branding and development.
 
 ---
 
 # 🎬 MYCINE
 
-**Your Cinema. Your Experience.**
+### Your Cinema. Your Experience.
 
-# MY-CINEBY
+## Important GitHub recommendation
+
+Add a `.gitignore` file in the root directory:
+
+gitignore
+
+```
+# Build outputs
+android-app/build/classes/
+android-app/build/dex/
+android-app/build/unsigned.apk
+android-app/build/aligned.apk
+android-app/build/*.idsig
+
+# Private signing credentials
+*.keystore
+*.jks
+
+# Local secrets
+local.properties
+.env
+`
