@@ -65,18 +65,43 @@ text
 MYCINE/
 │
 ├── android-app/
-│   ├── app/
-│   ├── build.gradle
-│   ├── settings.gradle
-│   └── build.sh
+│   │
+│   ├── AndroidManifest.xml
+│   │
+│   ├── assets/
+│   │   └── index.html
+│   │
+│   ├── build/
+│   │   ├── aligned.apk
+│   │   ├── classes/
+│   │   ├── dex/
+│   │   ├── MYCINE.apk
+│   │   ├── MYCINE.apk.idsig
+│   │   ├── mycine-debug.keystore
+│   │   └── unsigned.apk
+│   │
+│   ├── build.sh
+│   ├── README.md
+│   │
+│   ├── res/
+│   │   ├── drawable/
+│   │   │   ├── app_icon.png
+│   │   │   └── tv_banner.png
+│   │   └── values/
+│   │
+│   ├── src/
+│   │   └── main/
+│   │       └── java/
+│   │           └── com/
+│   │               └── mycine/
+│   │                   └── tv/
+│   │                       └── MainActivity.java
+│   │
+│   └── tools/
 │
+├── index.html
 ├── MYCINE.apk
-│
-├── README.md
-│
-├── .gitignore
-│
-└── LICENSE
+└── README.md
 ```
 
 ## 🔑 TMDB API Configuration
