@@ -243,23 +243,4 @@ All trademarks and content belong to their respective owners.
 
 **Your Cinema. Your Experience.**
 
-### Your final project directory should look like this:
-
-text
-
-```
-MYCINE/
-│
-├── android-app/
-│
-├── MYCINE.apk
-│
-├── README.md
-│
-├── .gitignore
-│
-└── LICENSE
-```
-
-
 # MY-CINEBY
