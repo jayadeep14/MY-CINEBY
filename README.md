@@ -6,6 +6,7 @@
 MYCINE combines a premium Netflix-inspired interface, TMDB movie discovery, movie search, direct TMDB ID loading, and CineSRC player integration.
 
 ---
+<img width="1796" height="1457" alt="image" src="https://github.com/user-attachments/assets/5bde7d0d-dad2-4c1f-98f8-e1dee214ba0c" />
 
 ## 📱 Application Information
 
@@ -267,25 +268,4 @@ All trademarks and content belong to their respective owners.
 
 ### Your Cinema. Your Experience.
 
-## Important GitHub recommendation
 
-Add a `.gitignore` file in the root directory:
-
-gitignore
-
-```
-# Build outputs
-android-app/build/classes/
-android-app/build/dex/
-android-app/build/unsigned.apk
-android-app/build/aligned.apk
-android-app/build/*.idsig
-
-# Private signing credentials
-*.keystore
-*.jks
-
-# Local secrets
-local.properties
-.env
-`
