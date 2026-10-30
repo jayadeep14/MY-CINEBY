@@ -7,7 +7,8 @@ MYCINE combines a premium Netflix-inspired interface, TMDB movie discovery, movi
 
 ---
 
-<img width="1802" height="1156" alt="image" src="https://github.com/user-attachments/assets/f2c43664-71e2-4918-b875-cbe3e76168d2" />
+<img width="1782" height="1003" alt="image" src="https://github.com/user-attachments/assets/1502b493-35d4-4442-be18-b1fdd55b4594" />
+
 
 
 ## 📱 Application Information
