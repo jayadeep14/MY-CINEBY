@@ -9,6 +9,10 @@ MYCINE combines a premium Netflix-inspired interface, TMDB movie discovery, movi
 
 <img width="1782" height="1003" alt="image" src="https://github.com/user-attachments/assets/1502b493-35d4-4442-be18-b1fdd55b4594" />
 
+<p align="center">
+  🌐 <a href="https://jayadeep14.github.io/MY-CINEBY/">LIVE DEMO</a> |
+  📂 <a href="https://github.com/jayadeep14/MY-CINEBY">GITHUB REPOSITORY</a>
+</p>
 
 
 ## 📱 Application Information
